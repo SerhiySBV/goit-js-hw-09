@@ -12,6 +12,7 @@ function onStartClick() {
   }, 1000);
   butonStartEl.disabled = true;
 }
+
 function onStopClick() {
   clearInterval(timer);
   butonStartEl.disabled = false;
