@@ -11,11 +11,13 @@ function onStartClick() {
     document.body.style.backgroundColor = getRandomHexColor();
   }, 1000);
   butonStartEl.disabled = true;
+  butonStopEl.disabled = false;
 }
 
 function onStopClick() {
   clearInterval(timer);
   butonStartEl.disabled = false;
+  butonStopEl.disabled = true;
 }
 
 function getRandomHexColor() {
