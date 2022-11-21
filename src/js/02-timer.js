@@ -8,15 +8,17 @@ const minutesEL = document.querySelector('[data-minutes]');
 const secondsEL = document.querySelector('[data-seconds]');
 const startButtonEL = document.querySelector('[data-start]');
 const dateTimePicker = document.querySelector('#datetime-picker');
-console.log(timerEl);
+
 startButtonEL.disabled = true;
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
+
+  // Event onClose
+
   onClose(selectedDates) {
-    console.log(Date.parse(selectedDates[0]));
     if (Date.parse(selectedDates[0]) <= Date.parse(new Date())) {
       Notiflix.Notify.failure('Please choose a date in the future');
       startButtonEL.disabled = true;
@@ -27,6 +29,7 @@ const options = {
 
     function onButtonClick() {
       dateTimePicker.disabled = true;
+      startButtonEL.disabled = true;
       let timerId = null;
       timerId = setInterval(() => {
         let timerCount = convertMs(
@@ -37,28 +40,26 @@ const options = {
         hoursEL.textContent = addLeadingZero(timerCount.hours);
         minutesEL.textContent = addLeadingZero(timerCount.minutes);
         secondsEL.textContent = addLeadingZero(timerCount.seconds);
-        console.log(addLeadingZero(secondsEL.textContent));
 
         if (Date.parse(selectedDates[0]) - Date.parse(new Date()) === 0) {
           clearInterval(timerId);
           Notify.success('Time is up!');
+          dateTimePicker.disabled = false;
         }
       }, 1000);
     }
     startButtonEL.addEventListener('click', onButtonClick);
-    console.log(selectedDates[0]);
   },
 };
+
+// Formating uncounter
 
 const inputEL = flatpickr('#datetime-picker', options);
 
 function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
 }
-// timerEl.style.dislay = flex;
-// display: grid;
-// grid-template-columns: 50px 50px 60px 60px;
-// grid-gap: 15px;
+
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -77,3 +78,15 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
+
+// CSS style
+
+const timeValues = document.querySelectorAll('.value');
+timeValues.forEach(timeValue => (timeValue.style.fontSize = '40px'));
+
+const timeLabels = document.querySelectorAll('.label');
+timeLabels.forEach(timeLabel => (timeLabel.style.fontSize = '15px'));
+
+const timerEl = document.querySelector('.timer');
+timerEl.style.cssText =
+  'display: grid; grid-template-columns: 80px 80px 80px 80px; grid-gap: 10px; text-transform: uppercase;';
